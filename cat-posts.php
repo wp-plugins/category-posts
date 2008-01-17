@@ -4,7 +4,7 @@ Plugin Name: Category Posts Widget
 Plugin URI: http://jameslao.com/
 Description: Adds a widget that can display a specified number of posts from a single category. Can also set how many widgets to show.
 Author: James Lao	
-Version: 1.0
+Version: 1.2
 Author URI: http://jameslao.com/
 */
 
@@ -12,14 +12,22 @@ Author URI: http://jameslao.com/
 function nk_cat_posts_widget($args, $number = 1) {
 	extract($args);
 	$options = get_option('widget_cat_posts');
-	$title = empty($options[$number]['title']) ? 'Category' : $options[$number]['title'];
-	$cat_id = empty($options[$number]['cat']) ? 1 : $options[$number]['cat'];
+	$catID = empty($options[$number]['cat']) ? 1 : $options[$number]['cat'];
+	
+	// If not title, use the name of the category.
+	if( empty($options[$number]['title']) ) {
+		$categoryInfo = get_category($catID);
+		$title = $categoryInfo->name;
+	} else {
+		$title = $options[$number]['title'];
+	}
+	
 	$num = $options[$number]['num'] > 15 ? 15 : $options[$number]['num'];
 	
 	echo $before_widget;
 	echo $before_title . $title . $after_title;
 	echo '<ul>';
-	nk_cat_posts($cat_id, $num);
+	nk_cat_posts($catID, $num);
 	echo '</ul>';
 	echo $after_widget;
 }
@@ -27,7 +35,7 @@ function nk_cat_posts_widget($args, $number = 1) {
 // The control dialog.
 function nk_cat_posts_widget_control($number) {
 	$options = $newoptions = get_option('widget_cat_posts');
-	if ( $_POST["cat-posts-title-" . $number] ) {
+	if ( $_POST["cat-posts-title-" . $number] || $_POST["show-cat-id-" . $number] || $_POST["cat-posts-num-" . $number] ) {
 		$newoptions[$number]['title'] = strip_tags(stripslashes($_POST["cat-posts-title-" . $number]));
 		$newoptions[$number]['cat'] = $_POST["show-cat-id-" . $number];
 		$newoptions[$number]['num'] = is_numeric($_POST["cat-posts-num-" . $number]) && $_POST["cat-posts-num-" . $number]!=0 ? $_POST["cat-posts-num-" . $number] : 5;
@@ -53,7 +61,7 @@ function nk_cat_posts_widget_page() {
 			<h2>Category Posts Widgets</h2>
 			<p style="line-height: 30px;">How many category posts widgets would you like?
 			<select id="cat-posts-number" name="cat-posts-number" value="<?php echo $options['num_of_widgets']; ?>">
-<?php for ( $i = 1; $i < 10; ++$i ) echo "<option value='$i' ".($options['num_of_widgets']==$i ? "selected='selected'" : '').">$i</option>"; ?>
+<?php for ( $i = 1; $i <= 20; ++$i ) echo "<option value='$i' ".($options['num_of_widgets']==$i ? "selected='selected'" : '').">$i</option>"; ?>
 			</select>
 			<span class="submit"><input type="submit" name="cat-posts-number-submit" id="cat-posts-number-submit" value="<?php echo attribute_escape(__('Save')); ?>" /></span></p>
 		</form>
@@ -66,7 +74,7 @@ function nk_cat_posts_widget_setup() {
 	$options = $newoptions = get_option('widget_cat_posts');
 	if ( isset($_POST['cat-posts-number-submit']) ) {
 		$number = (int) $_POST['cat-posts-number'];
-		if ( $number > 9 ) $number = 9;
+		if ( $number > 20 ) $number = 20;
 		if ( $number < 1 ) $number = 1;
 		$newoptions['num_of_widgets'] = $number;
 	}
@@ -82,10 +90,10 @@ function nk_cat_posts_widget_register() {
 	$options = get_option('widget_cat_posts');
 	$num_of_widgets = $options['num_of_widgets'];
 	if ( $num_of_widgets < 1 ) $num_of_widgets = 1;
-	if ( $num_of_widgets > 9 ) $num_of_widgets = 9;
+	if ( $num_of_widgets > 20 ) $num_of_widgets = 20;
 	$dims = array('width' => 300, 'height' => 150);
 	$class = array('classname' => 'widget_cat_posts');
-	for ($i = 1; $i <= 9; $i++) {
+	for ($i = 1; $i <= 20; $i++) {
 		$name = sprintf('Category Posts %d', $i);
 		$id = "cat-posts-$i";
 		wp_register_sidebar_widget($id, $name, $i <= $num_of_widgets ? 'nk_cat_posts_widget' : '', $class, $i);

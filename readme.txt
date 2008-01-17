@@ -3,7 +3,7 @@ Contributors: James Lao
 Donate link: http://jameslao.com/
 Tags: category, posts, widget
 Requires at least: 2.2
-Tested up to: 2.3
+Tested up to: 2.3.2
 Stable tag: 1.2
 
 Adds a widget that shows the most recent posts in a single category. You can specify how many posts to show and from which category as well as how many widgets to show.

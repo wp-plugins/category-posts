@@ -4,7 +4,7 @@ Plugin Name: Category Posts Widget
 Plugin URI: http://jameslao.com/
 Description: Adds a widget that can display a specified number of posts from a single category. Can also set how many widgets to show.
 Author: James Lao	
-Version: 1.2
+Version: 1.2.1
 Author URI: http://jameslao.com/
 */
 
@@ -13,6 +13,7 @@ function nk_cat_posts_widget($args, $number = 1) {
 	extract($args);
 	$options = get_option('widget_cat_posts');
 	$catID = empty($options[$number]['cat']) ? 1 : $options[$number]['cat'];
+	$titleLink = empty($options[$number]['titleLink']) ? FALSE : $options[$number]['titleLink'];
 	
 	// If not title, use the name of the category.
 	if( empty($options[$number]['title']) ) {
@@ -25,7 +26,15 @@ function nk_cat_posts_widget($args, $number = 1) {
 	$num = $options[$number]['num'] > 15 ? 15 : $options[$number]['num'];
 	
 	echo $before_widget;
-	echo $before_title . $title . $after_title;
+	echo $before_title;
+	
+	if( $titleLink ) {
+		echo '<a href="' . get_category_link($catID) . '">' . $title . '</a>';
+	} else {
+		echo $title;
+	}
+	
+	echo $after_title;
 	echo '<ul>';
 	nk_cat_posts($catID, $num);
 	echo '</ul>';
@@ -39,6 +48,7 @@ function nk_cat_posts_widget_control($number) {
 		$newoptions[$number]['title'] = strip_tags(stripslashes($_POST["cat-posts-title-" . $number]));
 		$newoptions[$number]['cat'] = $_POST["show-cat-id-" . $number];
 		$newoptions[$number]['num'] = is_numeric($_POST["cat-posts-num-" . $number]) && $_POST["cat-posts-num-" . $number]!=0 ? $_POST["cat-posts-num-" . $number] : 5;
+		$newoptions[$number]['titleLink'] = $_POST["cat-posts-title-link-" . $number] ? TRUE : FALSE;
 	}
 	if ( $options != $newoptions ) {
 		$options = $newoptions;
@@ -50,6 +60,9 @@ function nk_cat_posts_widget_control($number) {
 	wp_dropdown_categories(array('name'=>'show-cat-id-' . $number, 'selected'=>$options[$number]['cat']));
 	echo '</label></p>';
 	echo '<p><label for="cat-posts-num-' . $number . '">Number of posts to show: <input size="3" id="cat-posts-num-' . $number . '" name="cat-posts-num-' . $number . '" type="text" value="' . $options[$number]['num'] . '" /></label> (max 15)</p>';
+	
+	echo '<p><label for="cat-posts-title-link-' . $number . '">Link widget title to category page? <input name="cat-posts-title-link-' . $number . '" type="checkbox"';
+	echo $options[$number]['titleLink'] ? ' checked="checked"></label></p>' : '></label></p>';
 }
 
 // Displays the dialog to set how many widgets.
@@ -91,7 +104,7 @@ function nk_cat_posts_widget_register() {
 	$num_of_widgets = $options['num_of_widgets'];
 	if ( $num_of_widgets < 1 ) $num_of_widgets = 1;
 	if ( $num_of_widgets > 20 ) $num_of_widgets = 20;
-	$dims = array('width' => 300, 'height' => 150);
+	$dims = array('width' => 300, 'height' => 160);
 	$class = array('classname' => 'widget_cat_posts');
 	for ($i = 1; $i <= 20; $i++) {
 		$name = sprintf('Category Posts %d', $i);

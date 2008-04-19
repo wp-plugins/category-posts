@@ -10,6 +10,8 @@ Adds a widget that shows the most recent posts in a single category. You can spe
 
 == Description ==
 
+**NOTICE:** You may have to reconfigure Category Posts if you are upgrading from a previous version to 1.3.
+
 Category Posts Widget is a light widget designed to do one thing and do it well: display the most recent posts from a certain category.
 
 Features:
@@ -17,7 +19,7 @@ Features:
 * Specify how many posts to show
 * Set which category the posts should come form
 * Designate how many of the widgets you need
-* Specify whether to make to the widget title a link to the category page
+* **New Feature** Specify whether to make to the widget title a link to the category page
 * Optionally show the post excerpt
 
 == Installation ==

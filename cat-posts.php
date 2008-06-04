@@ -4,7 +4,7 @@ Plugin Name: Category Posts Widget
 Plugin URI: http://jameslao.com/
 Description: Adds a widget that can display a specified number of posts from a single category. Can also set how many widgets to show.
 Author: James Lao	
-Version: 1.3
+Version: 1.3.1
 Author URI: http://jameslao.com/
 */
 
@@ -167,7 +167,7 @@ function jl_cat_posts_control( $widget_args = 1 ) {
 			</label>
 		</p>
 		
-		<input type="hidden" id="cat-posts-<?php echo $number; ?>" name="cat-posts[<?php echo $number; ?>][submit]" value="1" />
+		<!--<input type="hidden" name="cat-posts[<?php echo $number; ?>][submit]" value="1" />-->
 <?php
 
 }

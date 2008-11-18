@@ -55,7 +55,10 @@ function jl_cat_posts_widget( $args, $widget_args = 1 ) {
 		echo '<li class="cat-posts-item-' . $post->ID . '"><a href="' . get_permalink($post) . '">' . $post->post_title . '</a>';
 		if( $excerpt ) {
 			echo '<br />';
-			the_excerpt();
+			if ($post->post_excerpt!=NULL)
+				echo $post->post_excerpt;
+			else
+				the_excerpt();
 		}
 		echo '</li>';
 	}

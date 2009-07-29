@@ -18,6 +18,7 @@ function CategoryPosts() {
  * Displays category posts widget on blog.
  */
 function widget($args, $instance) {
+	global $post, $wp_query;
 	extract( $args );
 	
 	// If not title, use the name of the category.
@@ -31,7 +32,6 @@ function widget($args, $instance) {
 	
 	// Get array of post info.
 	query_posts("showposts=" . $instance["num"] . "&cat=" . $instance["cat"]);
-	global $post, $wp_query; // So we can get the post ID
 	
 	echo $before_widget;
 	

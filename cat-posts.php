@@ -26,9 +26,12 @@ function widget($args, $instance) {
 		$instance["title"] = $category_info->name;
 	}
 	
+	// Save old query...
+	$old_query = $wp_query;
+	
 	// Get array of post info.
 	query_posts("showposts=" . $instance["num"] . "&cat=" . $instance["cat"]);
-	global $post; // So we can get the post ID
+	global $post, $wp_query; // So we can get the post ID
 	
 	echo $before_widget;
 	
@@ -64,6 +67,9 @@ function widget($args, $instance) {
 	echo "</ul>\n";
 	
 	echo $after_widget;
+	
+	// Won't even know I was here...
+	$wp_query = $old_query;
 }
 
 /**

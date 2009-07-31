@@ -4,7 +4,7 @@ Donate link: http://jameslao.com/
 Tags: category, posts, widget
 Requires at least: 2.8
 Tested up to: 2.8.2
-Stable tag: 2.2
+Stable tag: 2.3
 
 Adds a widget that shows the most recent posts in a single category.
 
@@ -29,6 +29,10 @@ Features:
 4. Goto the Widget tab of the Presentation section and configure the widget.
 
 == Changelog ==
+
+2.3
+
+* Really tried to fix bug where wp_query global was getting over written by manually instantiating a WP_Query object
 
 2.1
 

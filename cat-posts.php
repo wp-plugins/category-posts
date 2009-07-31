@@ -4,7 +4,7 @@ Plugin Name: Category Posts Widget
 Plugin URI: http://jameslao.com/2009/07/29/category-posts-widget-2-0/
 Description: Adds a widget that can display a specified number of posts from a single category. Can also set how many widgets to show.
 Author: James Lao	
-Version: 2.2
+Version: 2.3
 Author URI: http://jameslao.com/
 */
 
@@ -27,11 +27,8 @@ function widget($args, $instance) {
 		$instance["title"] = $category_info->name;
 	}
 	
-	// Save old query...
-	$old_query = $wp_query;
-	
 	// Get array of post info.
-	query_posts("showposts=" . $instance["num"] . "&cat=" . $instance["cat"]);
+	$cat_posts = new WP_Query("showposts=" . $instance["num"] . "&cat=" . $instance["cat"]);
 	
 	echo $before_widget;
 	
@@ -47,17 +44,17 @@ function widget($args, $instance) {
 	// Post list
 	echo "<ul>\n";
 	
-	while ( have_posts() ) : the_post();
+	while ( $cat_posts->have_posts() ) : $cat_posts->the_post();
 	?>
 		<li class='cat-post-item'>
 
-		<?php if ( (bool) $instance["thumbnail"] && function_exists('p75HasThumbnail') && p75HasThumbnail($post->ID) ) { ?>
+		<?php if ( (bool) $instance["thumbnail"] && function_exists('p75HasThumbnail') && p75HasThumbnail($cat_posts->post->ID) ) { ?>
 		
-			<a href="<?php the_permalink(); ?>" title="<?php echo the_title_attribute(); ?>"><img class='alignleft' src='<?php echo p75GetThumbnail($post->ID, $instance["thumbnail_width"], $instance["thumbnail_height"]); ?>' alt='<?php echo the_title_attribute(); ?>' /></a>
+			<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><img class='alignleft' src='<?php echo p75GetThumbnail($post->ID, $instance["thumbnail_width"], $instance["thumbnail_height"]); ?>' alt='<?php the_title_attribute(); ?>' /></a>
 		
 		<?php } // end thumbnail function check ?>
 
-			<a class="post-title" href="<?php echo the_permalink(); ?>" title="<?php echo the_title_attribute(); ?>"><?php echo the_title(); ?></a>
+			<a class="post-title" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
 
 			<?php if ( $instance['excerpt'] ) the_excerpt(); ?>
 		</li>
@@ -67,9 +64,6 @@ function widget($args, $instance) {
 	echo "</ul>\n";
 	
 	echo $after_widget;
-	
-	// Won't even know I was here...
-	$wp_query = $old_query;
 }
 
 /**

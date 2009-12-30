@@ -30,6 +30,10 @@ Features:
 3. Goto the Plugins section of the WordPress admin and activate the plugin.
 4. Goto the Widget tab of the Presentation section and configure the widget.
 
+== Upgrade Notice ==
+
+Note that version 3.0 drops support for [Simple Post Thumbnails plugin](http://wordpress.org/extend/plugins/simple-post-thumbnails/) in favor of WP 2.9's built in post thumbnail functionality.
+
 == Screenshots ==
 
 1. The widget configuration dialog.
@@ -39,6 +43,7 @@ Features:
 3.0
 
 * Added support for WP 2.9's post thumbnail feature.
+* Removed support for Simple Post Thumbnails plugin.
 * Added option to show the post date.
 * Added option to set the excerpt length.
 * Added option to show the number of comments.

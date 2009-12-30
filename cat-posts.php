@@ -68,7 +68,7 @@ function widget($args, $instance) {
 		$cat_posts->the_post();
 	?>
 		<li class='cat-post-item'>
-			<h4><a class="post-title" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h4>
+			<a class="post-title" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
 			
 			<?php
 				if (

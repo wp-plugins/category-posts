@@ -67,8 +67,8 @@ function widget($args, $instance) {
 	{
 		$cat_posts->the_post();
 	?>
-		<li class='cat-post-item'>
-			<a class="post-title" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
+		<li class="cat-post-item">
+			<a class="post-title" href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a>
 			
 			<?php
 				if (
@@ -92,7 +92,7 @@ function widget($args, $instance) {
 			<?php endif; ?>
 			
 			<?php if ( $instance['comment_num'] ) : ?>
-			<p class="comment_num">(<?php comments_number(); ?>)</p>
+			<p class="comment-num">(<?php comments_number(); ?>)</p>
 			<?php endif; ?>
 		</li>
 	<?php

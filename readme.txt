@@ -42,6 +42,7 @@ Note that version 3.0 drops support for [Simple Post Thumbnails plugin](http://w
 == Changelog ==
 
 3.2
+
 * Added option to change ordering of posts. Defaults to showing newest posts first.
 
 3.1
